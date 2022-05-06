@@ -1,6 +1,6 @@
 # Firefox Search Bangs
 
-This is a Firefox extension to add support for DuckDuckGo-style search bangs when Google is set as your default search engine.
+This is a Firefox extension to add support for DuckDuckGo-style search bangs when Google.com is set as your default search engine. If you want it to work on other search engines, let me know.
 
 Examples:
 
