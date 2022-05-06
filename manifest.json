@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "Search Bangs",
+  "version": "1.0",
+  "description": "DuckDuckGo-style search !bangs",
+  "homepage_url": "https://github.com/danielktaylor/search-bangs",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "24": "icons/icon-24.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "https://duckduckgo.com/bang.js",
+    "*://www.google.com/search*"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
+  }
+}
