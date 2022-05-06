@@ -2,6 +2,8 @@ const pattern = '*://www.google.com/search*'
 const lookup = {}
 const noQueryURL = {}
 
+// If this ever gets ported to Chrome, might need a polyfill:
+// https://github.com/mozilla/webextension-polyfill
 fetch('https://duckduckgo.com/bang.js')
   .then(data => data.json())
   .then(json => {
