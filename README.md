@@ -8,6 +8,7 @@ Examples:
 * `New York!gm` ⮕ Search Google Maps for "New York"
 * `!a Harry Potter` ⮕ Search Amazon for "Harry Potter"
 * `!w` ⮕ Go to the Wikipedia homepage
+* `!ddg news` ⮕ Search DuckDuckGo for "news"
 
 Learn more about bangs at [DuckDuckGo](https://duckduckgo.com/bang).
 
