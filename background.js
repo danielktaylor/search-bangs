@@ -48,9 +48,14 @@ function redirect (requestDetails) {
     newURL = "https://" + noQueryURL[bang.toLowerCase()]
   }
   
+  if (noUrlEncode.includes(bang.toLowerCase())) {
+    return {
+      redirectUrl: newURL.replace('{{{s}}}', searchTerms.trimStart().trim())
+    }
+  }
+  
   return {
     redirectUrl: newURL.replace('{{{s}}}', encodeURIComponent(searchTerms.trimStart().trim()))
-    //redirectUrl: newURL.replace('{{{s}}}', searchTerms.trimStart().trim())
   }
 }
 
