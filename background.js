@@ -2,6 +2,11 @@ const pattern = '*://www.google.com/search*'
 const lookup = {}
 const noQueryURL = {}
 
+// The bang.js file doesn't tell us which URL's
+// expect the search terms to NOT be URL encoded,
+// So we have to hardcode this...
+const noUrlEncode = ["wayback"]
+
 // If this ever gets ported to Chrome, might need a polyfill:
 // https://github.com/mozilla/webextension-polyfill
 fetch('https://duckduckgo.com/bang.js')
@@ -29,22 +34,23 @@ function redirect (requestDetails) {
   }
   
   let bang = query.substring(firstBangIdx+1,).split(" ")[0]
-  if (lookup[bang] === undefined) {
+  if (lookup[bang.toLowerCase()] === undefined) {
     // Unknown bang
     return {
       cancel: false
     }
   }
   
-  let newURL = lookup[bang]
+  let newURL = lookup[bang.toLowerCase()]
   let searchTerms = query.replace("!".concat(bang),"")
   if (searchTerms.trim() === '') {
     // Bare bang with no search terms
-    newURL = "https://" + noQueryURL[bang]
+    newURL = "https://" + noQueryURL[bang.toLowerCase()]
   }
   
   return {
-    redirectUrl: newURL.replace('{{{s}}}', encodeURIComponent(searchTerms))
+    redirectUrl: newURL.replace('{{{s}}}', encodeURIComponent(searchTerms.trimStart().trim()))
+    //redirectUrl: newURL.replace('{{{s}}}', searchTerms.trimStart().trim())
   }
 }
 
