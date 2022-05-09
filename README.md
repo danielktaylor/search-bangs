@@ -31,4 +31,4 @@ Please file an [issue](https://github.com/danielktaylor/search-bangs/issues).
 
 Any behavioral differences from the way DuckDuckGo works are considered bugs.
 
-Note that the first time you install the extension, the bang definitions file is downloaded from DuckDuckGo is cached. If you'd like to redownload it, clear the extensions storage (or just reinstall the extension).
+Note that the first time you install the extension, the bang definitions file is downloaded from DuckDuckGo and cached. If you'd like to redownload it, clear the extensions storage (or just reinstall the extension).
