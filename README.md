@@ -1,5 +1,9 @@
 # Firefox Search Bangs
 
+[![Firefox Add-On version](https://img.shields.io/amo/v/search-bangs?colorA=35383d)](https://addons.mozilla.org/en-US/firefox/addon/search-bangs/)
+
+[![Firefox Add-On link](./images/firefox.png)](https://addons.mozilla.org/en-US/firefox/addon/search-bangs/)
+
 This is a Firefox extension to add support for DuckDuckGo-style search bangs when Google.com is set as your default search engine. If you want it to work on other search engines, let me know.
 
 Examples:
