@@ -1,23 +1,48 @@
 const pattern = '*://www.google.com/search*'
-const lookup = {}
-const noQueryURL = {}
+let lookup = {}
+let noQueryURL = {}
 
 // The bang.js file doesn't tell us which URL's
 // expect the search terms to NOT be URL encoded,
 // So we have to hardcode this...
 const noUrlEncode = ["wayback"]
 
-// If this ever gets ported to Chrome, might need a polyfill:
-// https://github.com/mozilla/webextension-polyfill
-fetch('https://duckduckgo.com/bang.js')
-  .then(data => data.json())
-  .then(json => {
-    json.forEach(entry => {
-      noQueryURL[entry.t] = entry.d
-      lookup[entry.t] = entry.u
+function loadBangJs() {
+  // If this ever gets ported to Chrome, might need a polyfill:
+  // https://github.com/mozilla/webextension-polyfill
+  fetch('https://duckduckgo.com/bang.js')
+    .then(data => data.json())
+    .then(json => {
+      json.forEach(entry => {
+        noQueryURL[entry.t] = entry.d
+        lookup[entry.t] = entry.u
+      })
+      
+      browser.storage.local.set({
+        lookup: JSON.stringify(lookup),
+        noQueryURL: JSON.stringify(noQueryURL)
+      })          
     })
-  })
-  .catch(e => console.error(e))
+    .catch(e => console.error(e))
+}
+
+function onError(error) {
+  loadBangJs()
+}
+
+function onGot(item) {
+  if (item === undefined || item.lookup === undefined || item.noQueryURL === undefined) {
+    loadBangJs()
+    return
+  }
+
+  lookup = JSON.parse(item.lookup)
+  noQueryURL = JSON.parse(item.noQueryURL)
+}
+
+// Fetch bang.js from localstorage or DDG
+let cached = browser.storage.local.get(["lookup", "noQueryURL"]);
+cached.then(onGot, onError);
 
 function redirect (requestDetails) {
   const url = new URL(requestDetails.url)

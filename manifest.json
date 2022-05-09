@@ -15,6 +15,7 @@
   "permissions": [
     "webRequest",
     "webRequestBlocking",
+    "storage",
     "https://duckduckgo.com/bang.js",
     "*://www.google.com/search*"
   ],
