@@ -1,13 +1,22 @@
 const pattern = '*://www.google.com/search*'
 let lookup = {}
 let noQueryURL = {}
+let extensionVersion = browser.runtime.getManifest().version
 
 // The bang.js file doesn't tell us which URL's
 // expect the search terms to NOT be URL encoded,
 // So we have to hardcode this...
 const noUrlEncode = ["wayback"]
 
+function overrides() {
+  // Overrides
+  // bang.js doesn't always match DDG behavior :(
+  noQueryURL["gm"] = "maps.google.com"
+}
+
 function loadBangJs() {
+  console.log("RELOADING BANG JS")
+
   // If this ever gets ported to Chrome, might need a polyfill:
   // https://github.com/mozilla/webextension-polyfill
   fetch('https://duckduckgo.com/bang.js')
@@ -18,9 +27,12 @@ function loadBangJs() {
         lookup[entry.t] = entry.u
       })
       
+      overrides()
+
       browser.storage.local.set({
         lookup: JSON.stringify(lookup),
-        noQueryURL: JSON.stringify(noQueryURL)
+        noQueryURL: JSON.stringify(noQueryURL),
+        extensionVersion: extensionVersion
       })          
     })
     .catch(e => console.error(e))
@@ -31,7 +43,8 @@ function onError(error) {
 }
 
 function onGot(item) {
-  if (item === undefined || item.lookup === undefined || item.noQueryURL === undefined) {
+  // Load bang.js file if the cache doesn't exist _or_ there has been an extension update
+  if (item === undefined || item.lookup === undefined || item.noQueryURL === undefined || item.extensionVersion != extensionVersion) {
     loadBangJs()
     return
   }
@@ -41,7 +54,7 @@ function onGot(item) {
 }
 
 // Fetch bang.js from localstorage or DDG
-let cached = browser.storage.local.get(["lookup", "noQueryURL"]);
+let cached = browser.storage.local.get(["lookup", "noQueryURL", "extensionVersion"]);
 cached.then(onGot, onError);
 
 function redirect (requestDetails) {
