@@ -36,3 +36,8 @@ Please file an [issue](https://github.com/danielktaylor/search-bangs/issues).
 Any behavioral differences from the way DuckDuckGo works are considered bugs.
 
 Note that the first time you install the extension, the bang definitions file is downloaded from DuckDuckGo and cached. If you'd like to redownload it, clear the extensions storage (or just reinstall the extension).
+
+## Changelog
+
+* `1.1` Override behavior for "!gm" to match DuckDuckGo behavior; automatically flush extension cache after version update
+* `1.0` Initial release
