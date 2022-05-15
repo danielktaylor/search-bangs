@@ -12,6 +12,7 @@ function overrides() {
   // Overrides
   // bang.js doesn't always match DDG behavior :(
   noQueryURL["gm"] = "maps.google.com"
+  lookup["gm"] = "https://maps.google.com/maps?hl=en&q={{{s}}}"
 }
 
 function loadBangJs() {
