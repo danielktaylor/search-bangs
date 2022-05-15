@@ -39,5 +39,6 @@ Note that the first time you install the extension, the bang definitions file is
 
 ## Changelog
 
-* `1.1` Override behavior for "!gm" to match DuckDuckGo behavior; automatically flush extension cache after version update
+* `1.1.1` Override behavior for "!gm" to match DuckDuckGo behavior
+* `1.1` Automatically flush extension cache after version update
 * `1.0` Initial release
