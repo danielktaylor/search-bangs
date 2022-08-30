@@ -1,8 +1,12 @@
 const patterns = [
 	'*://www.google.com/search*',
 	'*://www.bing.com/search*',
-	'*://www.ecosia.org/search*'
+	'*://www.ecosia.org/search*',
+	'*://yandex.ru/search*',
+	'*://yandex.com/search*'
 ]
+
+const queryParams = ['q', 'text']
 
 let lookup = {}
 let noQueryURL = {}
@@ -63,16 +67,26 @@ function onGot(item) {
 let cached = browser.storage.local.get(["lookup", "noQueryURL", "extensionVersion"]);
 cached.then(onGot, onError);
 
-function redirect(requestDetails) {
-	console.log(requestDetails)
+function getQuery(params) {
+	var result = null
+	queryParams.forEach(p => {
+		let query = params.get(p)
+		if (query !== null) {
+			result = query
+		}
+	})
+	return result
+}
 
+function redirect(requestDetails) {
 	const url = new URL(requestDetails.url)
 	const params = new URLSearchParams(url.search)
-	const query = params.get('q')
-	if (query === null)  return {
+	
+	const query = getQuery(params)
+	if (query === null) return {
 		cancel: false
 	}
-
+	
 	let firstBangIdx = query.indexOf("!")
 	if (firstBangIdx === -1) {
 		// No bang found

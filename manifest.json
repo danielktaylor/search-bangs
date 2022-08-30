@@ -19,7 +19,9 @@
 	"https://duckduckgo.com/bang.js",
 	"*://www.google.com/search*",
 	"*://www.bing.com/search*",
-	"*://www.ecosia.org/search*"
+	"*://www.ecosia.org/search*",
+	"*://yandex.ru/search*",
+	"*://yandex.com/search*"
 	
   ],
   "background": {
