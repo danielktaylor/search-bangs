@@ -2,11 +2,16 @@ const patterns = [
 	'*://www.google.com/search*',
 	'*://www.bing.com/search*',
 	'*://www.ecosia.org/search*',
+	'*://www.baidu.com/s*',
 	'*://yandex.ru/search*',
 	'*://yandex.com/search*'
 ]
 
-const queryParams = ['q', 'text']
+const queryParams = [
+	'q',      // google, bing, ecosia
+	'text',   // yandex
+	'wd'      // baidu
+]
 
 let lookup = {}
 let noQueryURL = {}
