@@ -1,4 +1,18 @@
-const pattern = '*://www.google.com/search*'
+const patterns = [
+  '*://www.google.com/search*',
+  '*://www.bing.com/search*',
+  '*://www.ecosia.org/search*',
+  '*://www.baidu.com/s*',
+  '*://yandex.ru/search*',
+  '*://yandex.com/search*'
+]
+
+const queryParams = [
+  'q',      // google, bing, ecosia
+  'text',   // yandex
+  'wd'      // baidu
+]
+
 let lookup = {}
 let noQueryURL = {}
 let extensionVersion = browser.runtime.getManifest().version
@@ -27,14 +41,14 @@ function loadBangJs() {
         noQueryURL[entry.t] = entry.d
         lookup[entry.t] = entry.u
       })
-      
+
       overrides()
 
       browser.storage.local.set({
         lookup: JSON.stringify(lookup),
         noQueryURL: JSON.stringify(noQueryURL),
         extensionVersion: extensionVersion
-      })          
+      })
     })
     .catch(e => console.error(e))
 }
@@ -58,11 +72,25 @@ function onGot(item) {
 let cached = browser.storage.local.get(["lookup", "noQueryURL", "extensionVersion"]);
 cached.then(onGot, onError);
 
-function redirect (requestDetails) {
+function getQuery(params) {
+  var result = null
+  queryParams.forEach(p => {
+    let query = params.get(p)
+    if (query !== null) {
+      result = query
+    }
+  })
+  return result
+}
+
+function redirect(requestDetails) {
   const url = new URL(requestDetails.url)
   const params = new URLSearchParams(url.search)
-  const query = params.get('q')
-  if (query === null) return { cancel: false }
+  
+  const query = getQuery(params)
+  if (query === null) return {
+    cancel: false
+  }
   
   let firstBangIdx = query.indexOf("!")
   if (firstBangIdx === -1) {
@@ -71,35 +99,36 @@ function redirect (requestDetails) {
       cancel: false
     }
   }
-  
-  let bang = query.substring(firstBangIdx+1,).split(" ")[0]
+
+  let bang = query.substring(firstBangIdx + 1, ).split(" ")[0]
   if (lookup[bang.toLowerCase()] === undefined) {
     // Unknown bang
     return {
       cancel: false
     }
   }
-  
+
   let newURL = lookup[bang.toLowerCase()]
-  let searchTerms = query.replace("!".concat(bang),"")
+  let searchTerms = query.replace("!".concat(bang), "")
   if (searchTerms.trim() === '') {
     // Bare bang with no search terms
     newURL = "https://" + noQueryURL[bang.toLowerCase()]
   }
-  
+
   if (noUrlEncode.includes(bang.toLowerCase())) {
     return {
       redirectUrl: newURL.replace('{{{s}}}', searchTerms.trimStart().trim())
     }
   }
-  
+
   return {
     redirectUrl: newURL.replace('{{{s}}}', encodeURIComponent(searchTerms.trimStart().trim()))
   }
 }
 
 browser.webRequest.onBeforeRequest.addListener(
-  redirect,
-  { urls: [pattern], types: ['main_frame'] },
-  ['blocking']
+  redirect, {
+    urls: patterns,
+    types: ['main_frame']
+  }, ['blocking']
 )

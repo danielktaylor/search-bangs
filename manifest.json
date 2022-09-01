@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Search Bangs",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "DuckDuckGo-style search !bangs",
   "homepage_url": "https://github.com/danielktaylor/search-bangs",
   "icons": {
@@ -17,7 +17,12 @@
     "webRequestBlocking",
     "storage",
     "https://duckduckgo.com/bang.js",
-    "*://www.google.com/search*"
+    "*://www.google.com/search*",
+    "*://www.bing.com/search*",
+    "*://www.ecosia.org/search*",
+    "*://www.baidu.com/s*",
+    "*://yandex.ru/search*",
+    "*://yandex.com/search*"
   ],
   "background": {
     "scripts": [
